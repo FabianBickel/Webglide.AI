@@ -1,5 +1,5 @@
 import express from "express";
-import snippetRouter from "./snippetRouter.jsZ";
+import snippetRouter from "./snippetRouter.js";
 
 const app = express();
 const apiRouter = express.Router();
