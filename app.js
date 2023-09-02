@@ -15,7 +15,8 @@ app.get("/", (req, res) => {
 
 app.post("/htmlSnippet", async (request, response) => {
   const prompt = request.body.prompt;
-  console.log(`Received request for HTML: ${prompt}`);
+
+  console.log(`Received request for HTML: "${prompt}"`);
 
   const functions = [
     {
@@ -43,17 +44,21 @@ app.post("/htmlSnippet", async (request, response) => {
     function_call: { "name": "returnHtmlSnippet" }
   });
 
-  const completion = await completionPromise;
-  console.log(completion.choices[0].message.function_call);
-  const result = JSON.parse(
-    completion
-      .choices[0]
-      .message
-      .function_call
-      .arguments);
-  console.log(result);
+  console.log("Asking GPT...");
 
-  response.status(200).json(result);
+  const completion = await completionPromise;
+  console.log(`Incoming message:\n---Start---\n${completion.choices[0]}\n---End---`);
+  const argumentsJsonString = completion
+    .choices[0]
+    .message
+    .function_call
+    .arguments;
+  const argumentsObject = JSON.parse(argumentsJsonString);
+  console.log(argumentsJsonString);
+  const htmlSnippet = argumentsObject.htmlSnippet;
+
+
+  response.status(200).send(htmlSnippet);
 });
 
 app.listen(3000, () => {
