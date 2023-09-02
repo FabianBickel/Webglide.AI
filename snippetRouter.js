@@ -21,4 +21,37 @@ snippetRouter.post("/html", async (request, response) => {
   response.status(200).send(htmlSnippet);
 });
 
+snippetRouter.post("/css", async (request, response) => {
+
+  const prompt = request.body.prompt;
+  const functionName = "returnCssSnippet";
+  const functionDescription = "Returns the CSS snippet for the given prompt to the user";
+  const parameterCssSnippet = [
+    "cssSnippet",
+    "The snippet you want to return to the user"
+  ];
+
+  const getCssSnippet = createGPTFunction(prompt, functionName, functionDescription);
+  getCssSnippet.addParameter(...parameterCssSnippet);
+  const argumentsObject = await getCssSnippet();
+
+  const cssSnippet = argumentsObject.cssSnippet;
+  response.status(200).send(cssSnippet);
+});
+
+snippetRouter.post("/js", async (request, response) => {
+
+  const prompt = request.body.prompt;
+  const functionName = "returnJsSnippet";
+  const functionDescription = "Returns the JavaScript snippet for the given prompt to the user";  
+  const parameterJsSnippet = [
+    "jsSnippet",
+    "The snippet you want to return to the user"
+  ];
+
+  const getJsSnippet = createGPTFunction(prompt, functionName, functionDescription);
+  getJsSnippet.addParameter(...parameterJsSnippet);
+  const argumentsObject = await getJsSnippet();
+});
+
 export default snippetRouter;
