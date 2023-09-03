@@ -1,3 +1,5 @@
+"use strict";
+
 import express from "express";
 import snippetRouter from "./snippetRouter.js";
 
@@ -10,7 +12,7 @@ function addMiddleware() {
 
 function addTestingRoutes() {
   app.get("/", (req, res) => {
-    res.sen("Hello World!");
+    res.send("Hello World!");
   });
 }
 
