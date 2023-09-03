@@ -3,7 +3,7 @@ import createGPTFunction from "./function.js";
 
 const snippetRouter = express.Router();
 
-snippetRouter.post("/html", async (request, response) => {
+snippetRouter.get("/html", async (request, response) => {
 
   const prompt = request.body.prompt;
   const functionName = "returnHtmlSnippet";
@@ -21,7 +21,7 @@ snippetRouter.post("/html", async (request, response) => {
   response.status(200).send(htmlSnippet);
 });
 
-snippetRouter.post("/css", async (request, response) => {
+snippetRouter.get("/css", async (request, response) => {
 
   const prompt = request.body.prompt;
   const functionName = "returnCssSnippet";
@@ -39,7 +39,7 @@ snippetRouter.post("/css", async (request, response) => {
   response.status(200).send(cssSnippet);
 });
 
-snippetRouter.post("/js", async (request, response) => {
+snippetRouter.get("/js", async (request, response) => {
 
   const prompt = request.body.prompt;
   const functionName = "returnJsSnippet";
