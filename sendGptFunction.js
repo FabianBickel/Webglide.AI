@@ -3,19 +3,19 @@
 import OpenAI from "openai";
 
 const MODEL = "gpt-3.5-turbo-0613";
-const CONTEXT =`
+const CONTEXT = `
 You are a web developer.
 Your job is it to do what the customer tells you to do.
 `;
 
 const openai = new OpenAI({ apiKey: "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" });
 
-export default function createGptFunction(prompt, name, description = "") {
+export default function sendGptFunction(prompt, name, description = "", messages = []) {
 
   const instance = async function () {
     const gptFunctionObject = buildGptFunctionObject(name, description, instance.functionParameters);
     // console.log("---FUNCTIONOBJECT---\n\n" + JSON.stringify(gptFunctionObject, null, 2) + "\n\n");
-    const promptObject = buildPromptObject(prompt, gptFunctionObject);
+    const promptObject = buildPromptObject(prompt, gptFunctionObject, messages);
     // console.log("---PROMPTOBJECT---\n\n" + JSON.stringify( promptObject, null, 2) + "\n\n");
     const completionPromise = openai.chat.completions.create(promptObject);
 
@@ -56,16 +56,17 @@ export default function createGptFunction(prompt, name, description = "") {
         "required": Object.keys(parameters)
       }
     };
-    return gptFunction
+    return gptFunction;
   }
 
-  function buildPromptObject(prompt, gptFunction) {
+  function buildPromptObject(prompt, gptFunction, messages = []) {
+    if (messages === []) {
+      messsages.push({ "role": "system", "content": CONTEXT });
+    }
+    messages.push({ "role": "user", "content": prompt });
     const promptObject = {
       model: MODEL,
-      messages: [
-        { "role": "system", "content": CONTEXT },
-        { "role": "user", "content": prompt }
-      ],
+      messages: messages,
       functions: [gptFunction],
       function_call: { "name": gptFunction.name }
     };

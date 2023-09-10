@@ -1,5 +1,5 @@
 import express from "express";
-import createGptFunction from "./createGptFunction.js";
+import sendGptFunction from "./sendGptFunction.js";
 
 const snippetRouter = express.Router();
 
@@ -13,7 +13,7 @@ snippetRouter.get("/html", async (request, response) => {
     "The snippet you want to return to the user"
   ];
 
-  const getHtmlSnippet = createGptFunction(prompt, functionName, functionDescription);
+  const getHtmlSnippet = sendGptFunction(prompt, functionName, functionDescription);
   getHtmlSnippet.addParameter(...parameterHtmlSnippet);
   const argumentsObject = await getHtmlSnippet();
 
@@ -31,7 +31,7 @@ snippetRouter.get("/css", async (request, response) => {
     "The snippet you want to return to the user"
   ];
 
-  const getCssSnippet = createGptFunction(prompt, functionName, functionDescription);
+  const getCssSnippet = sendGptFunction(prompt, functionName, functionDescription);
   getCssSnippet.addParameter(...parameterCssSnippet);
   const argumentsObject = await getCssSnippet();
 
@@ -49,7 +49,7 @@ snippetRouter.get("/js", async (request, response) => {
     "The snippet you want to return to the user"
   ];
 
-  const getJsSnippet = createGptFunction(prompt, functionName, functionDescription);
+  const getJsSnippet = sendGptFunction(prompt, functionName, functionDescription);
   getJsSnippet.addParameter(...parameterJsSnippet);
   const argumentsObject = await getJsSnippet();
 
