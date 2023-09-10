@@ -1,5 +1,5 @@
 import express from "express";
-import createGPTFunction from "./function.js";
+import createGptFunction from "./createGptFunction.js";
 
 const snippetRouter = express.Router();
 
@@ -13,7 +13,7 @@ snippetRouter.get("/html", async (request, response) => {
     "The snippet you want to return to the user"
   ];
 
-  const getHtmlSnippet = createGPTFunction(prompt, functionName, functionDescription);
+  const getHtmlSnippet = createGptFunction(prompt, functionName, functionDescription);
   getHtmlSnippet.addParameter(...parameterHtmlSnippet);
   const argumentsObject = await getHtmlSnippet();
 
@@ -31,7 +31,7 @@ snippetRouter.get("/css", async (request, response) => {
     "The snippet you want to return to the user"
   ];
 
-  const getCssSnippet = createGPTFunction(prompt, functionName, functionDescription);
+  const getCssSnippet = createGptFunction(prompt, functionName, functionDescription);
   getCssSnippet.addParameter(...parameterCssSnippet);
   const argumentsObject = await getCssSnippet();
 
@@ -43,15 +43,18 @@ snippetRouter.get("/js", async (request, response) => {
 
   const prompt = request.body.prompt;
   const functionName = "returnJsSnippet";
-  const functionDescription = "Returns the JavaScript snippet for the given prompt to the user";  
+  const functionDescription = "Returns the JavaScript snippet for the given prompt to the user";
   const parameterJsSnippet = [
     "jsSnippet",
     "The snippet you want to return to the user"
   ];
 
-  const getJsSnippet = createGPTFunction(prompt, functionName, functionDescription);
+  const getJsSnippet = createGptFunction(prompt, functionName, functionDescription);
   getJsSnippet.addParameter(...parameterJsSnippet);
   const argumentsObject = await getJsSnippet();
+
+  const jsSnippet = argumentsObject.jsSnippet;
+  response.status(200).send(jsSnippet);
 });
 
 export default snippetRouter;
