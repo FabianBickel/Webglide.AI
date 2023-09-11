@@ -17,7 +17,8 @@ snippetRouter.get("/html", async (request, response) => {
       "The snippet you want to return to the user"
     ];
 
-    const htmlPrompt = new gptPrompt(prompt);
+    const htmlPrompt = new gptPrompt();
+    htmlPrompt.addMessage(prompt);
     const htmlFunctionBuilder = new gptFunctionBuilder(functionName, functionDescription);
     htmlFunctionBuilder.addParameter(...parameterHtmlSnippet);
     const htmlFunction = htmlFunctionBuilder.build();

@@ -2,27 +2,33 @@
 
 import OpenAI from "openai";
 import checkForUndefined from "./checkForUndefined.js";
-import { response } from "express";
+import { json } from "express";
 
 const MODEL = "gpt-3.5-turbo-0613";
 const CONTEXT = `
 You are a web developer.
 Your job is it to do what the customer tells you to do.
-You plan out your work by writing down the steps you need to take to complete the task.
 `;
 
 const openai = new OpenAI({ apiKey: "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" });
 
 export default class gptPrompt {
 
-  #prompt;
   #messages;
   #gptFunction;
 
-  constructor(prompt, messages = []) {
-    checkForUndefined(prompt);
-    this.#prompt = prompt;
+  set messages(messages) {
+    checkForUndefined(messages);
     this.#messages = messages;
+  }
+
+  constructor(messages = []) {
+    this.#messages = messages;
+  }
+
+  addContext(context) {
+    checkForUndefined(context);
+    this.#messages.unshift({ "role": "system", "content": context });
   }
 
   addGptFunction(gptFunction) {
@@ -30,8 +36,19 @@ export default class gptPrompt {
     this.#gptFunction = gptFunction;
   }
 
+  addMessage(message) {
+    checkForUndefined(message);
+    if (this.#messages !== []) {
+      this.#messages.push({ "role": "user", "content": message });
+      return;
+    }
+    this.#messages.push({ "role": "system", "content": CONTEXT });
+    this.#messages.push({ "role": "user", "content": message });
+
+  }
+
   send() {
-    const promptObject = this.#buildPromptObject(this.#prompt, this.#messages, this.#gptFunction);
+    const promptObject = this.#buildPromptObject(this.#messages, this.#gptFunction);
     const completionPromise = openai.chat.completions.create(promptObject);
 
     return new Promise(async (resolve, reject) => {
@@ -49,9 +66,7 @@ export default class gptPrompt {
     });
   }
 
-  #buildPromptObject(prompt, messages = [], gptFunction = undefined) {
-    this.#addMessage(prompt);
-    
+  #buildPromptObject(messages = [], gptFunction = undefined) {
     const promptObject = {
       model: MODEL,
       messages: messages,
@@ -64,17 +79,11 @@ export default class gptPrompt {
 
     return promptObject;
   }
-
-  #addMessage(prompt) {
-    if (this.#messages === []) {
-      this.#messages.push({ "role": "system", "content": CONTEXT });
-    }
-    this.#messages.push({ "role": "user", "content": prompt });
-  }
 }
 
 async function resolveCompletion(completionPromise, messages = [], gptFunction = undefined) {
   const completion = await completionPromise;
+  console.log(JSON.stringify(completion, null, 2));
 
   let responseObject = {
     messages: messages
@@ -86,9 +95,10 @@ async function resolveCompletion(completionPromise, messages = [], gptFunction =
     responseObject.response = message.content;
   } else {
     responseObject.arguments = getArgumentsObject(completion);
-    const argumentContent = responseObject.arguments[Object.keys(gptFunction.parameters)[0]];
+    const argumentName = Object.keys(responseObject.arguments)[0];
+    const argumentContent = responseObject.arguments[argumentName];
     responseObject.response = argumentContent;
-    responseObject.messages.push(argumentContent);
+    responseObject.messages.push({ "role": "user", "content": argumentContent });
   }
 
   return responseObject;

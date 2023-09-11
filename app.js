@@ -2,6 +2,7 @@
 
 import express from "express";
 import snippetRouter from "./snippetRouter.js";
+import buildSiteRouter from "./buildSiteRouter.js";
 
 const app = express();
 const apiRouter = express.Router();
@@ -18,6 +19,7 @@ function addTestingRoutes() {
 
 function addRoutes() {
   apiRouter.use("/snippet", snippetRouter);
+  apiRouter.use("/site", buildSiteRouter);
   app.use("/api/v1", apiRouter);
 }
 
