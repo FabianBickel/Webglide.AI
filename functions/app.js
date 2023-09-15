@@ -1,8 +1,11 @@
 "use strict";
 
+import functions from "firebase-functions";
+
 import express from "express";
 import snippetRouter from "./snippetRouter.js";
 import buildSiteRouter from "./buildSiteRouter.js";
+
 
 const app = express();
 const apiRouter = express.Router();
@@ -23,13 +26,8 @@ function addRoutes() {
   app.use("/api/v1", apiRouter);
 }
 
-function startServer() {
-  app.listen(3000, () => {
-    console.log("Server listening on port 3000");
-  });
-}
-
 addMiddleware();
 addTestingRoutes();
 addRoutes();
-startServer();
+
+export default functions.region('europe-west6').https.onRequest(app);
