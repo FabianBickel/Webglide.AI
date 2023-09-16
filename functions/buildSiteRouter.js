@@ -1,5 +1,3 @@
-
-
 import express from "express";
 import checkForUndefined from "./checkForUndefined.js";
 import buildSite from "./buildSite.js";
@@ -11,10 +9,9 @@ buildSiteRouter.get("/build", async (request, response) => {
   checkForUndefined(prompt);
 
   const sitePromise = buildSite(prompt);
-  const { html, css, js } = await sitePromise;
-
-  const webPage = { html, css, js };
-  response.status(200).send(webPage);
+  const webPage = await sitePromise;
+  console.log(webPage);
+  response.status(200).json(webPage);
 });
 
 export default buildSiteRouter;
