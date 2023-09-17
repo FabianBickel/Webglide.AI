@@ -3,6 +3,8 @@
 import OpenAI from "openai";
 import checkForUndefined from "./checkForUndefined.js";
 import { json } from "express";
+import { config } from 'dotenv';
+config();
 
 const MODEL = "gpt-3.5-turbo-0613";
 const CONTEXT = `
@@ -11,7 +13,7 @@ Your job is it to do what the customer tells you to do.
 `;
 
 const openai = new OpenAI({
-  apiKey: "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",
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 export default class gptPrompt {
