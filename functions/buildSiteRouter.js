@@ -47,7 +47,7 @@ buildSiteRouter.get("/build", async (request, response) => {
       console.error("Error writing document: ", error);
     });
 
-  //response.status(200).json(webPage);
+  response.status(200).json(siteTitle);
 });
 
 export default buildSiteRouter;
