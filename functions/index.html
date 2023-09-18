@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Todo Page</title>
+    <style>
+      /* CSS styles here */
+      .todo-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 50px;
+      }
+      h1 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 20px;
+      }
+      input[type="text"] {
+        padding: 8px;
+        margin-right: 8px;
+      }
+      button {
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
+      ul.task-list {
+        list-style-type: none;
+        padding: 0;
+      }
+      div.task-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      div.task-item.completed label {
+        text-decoration: line-through;
+      }
+      div.task-item button {
+        margin-left: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="todo-container">
+      <h1>Todo List</h1>
+      <input type="text" placeholder="Enter task" /><button>Add</button>
+      <ul class="task-list">
+        <li class="task-item">
+          <input type="checkbox" /><label>Task 1</label><button>Delete</button>
+        </li>
+        <li class="task-item">
+          <input type="checkbox" /><label>Task 2</label><button>Delete</button>
+        </li>
+      </ul>
+    </div>
+    <script>
+      (function () {
+        const addButton = document.querySelector("button");
+        const inputField = document.querySelector("input[type=text]");
+        const taskList = document.querySelector(".task-list");
+        addButton.addEventListener("click", function () {
+          const taskName = inputField.value;
+          if (taskName) {
+            const listItem = document.createElement("li");
+            listItem.classList.add("task-item");
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            const label = document.createElement("label");
+            label.textContent = taskName;
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete";
+            listItem.appendChild(checkbox);
+            listItem.appendChild(label);
+            listItem.appendChild(deleteButton);
+            taskList.appendChild(listItem);
+            inputField.value = "";
+          }
+        });
+        taskList.addEventListener("click", function (event) {
+          const target = event.target;
+          if (
+            target.tagName.toLowerCase() === "input" &&
+            target.type === "checkbox"
+          ) {
+            const listItem = target.closest(".task-item");
+            listItem.classList.toggle("completed");
+          }
+          if (
+            target.tagName.toLowerCase() === "button" &&
+            target.textContent === "Delete"
+          ) {
+            const listItem = target.closest(".task-item");
+            listItem.remove();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

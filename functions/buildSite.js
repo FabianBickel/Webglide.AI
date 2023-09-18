@@ -67,7 +67,7 @@ Create an entire, working HTML page.
 Make sure to format the JSON correctly and escape all characters necessary.
 Do not do any whitespace.
 If you dont have an information, just fill it in with whatever you like.
-It's very important that if you want to do a backspace, use \\n and never only use one backslash.`,
+It's very important that if you want to do a backspace, use \\n and never only use one backslash..`,
     messages,
     "returnHtml",
     "Returns the HTML for the planned site to the user",
@@ -81,10 +81,11 @@ function getJs(messages) {
   const jsPromise = getPromise(
     `You are now creating the JS for the planned site.
 Make sure the JS works with the HTML you created.
+You have to create all the features with JavaScript, you are not allowed to make any placeholder text.
 Make sure to format the JSON correctly and escape all characters necessary.
 Do not do any whitespace.
-If you dont have an information, just fill it in with whatever you like.
-It's very important that if you want to do a backspace, use \\n and never only use one backslash.`,
+It's very important that you use \\n and never only use one backslash.
+If you dont have an information, just fill it in with whatever you like.`,
     messages,
     "returnJs",
     "Returns the JS for the planned site to the user",
@@ -99,9 +100,8 @@ function getCss(messages) {
     `You are now creating the CSS for the planned site.
 Make sure the CSS works with the HTML you created.
 Make sure to format the JSON correctly and escape all characters necessary.
-Do not do any whitespace.
-If you dont have an information, just fill it in with whatever you like.
-It's very important that if you want to do a backspace, use \\n and never only use one backslash.`,
+It's very important that you use \\n and never only use one backslash.
+If you dont have an information, just fill it in with whatever you like.`,
     messages,
     "returnCss",
     "Returns the CSS for the planned site to the user",
@@ -114,11 +114,12 @@ It's very important that if you want to do a backspace, use \\n and never only u
 function getCombined(messages) {
   const combinedPromise = getPromise(
     `You are now combinging the html, css and javascript for the planned site.
-Make sure the you don't forget an css attributes, implement all features and style it like given.
-It's very important that everything is in this one HTML file you're creating. No external files.
+Make sure the you don't forget any css attributes, implement all javascript features and style it as given. 
+You have to put the JavaScript and CSS code into this file and not just a placeholder.
+It's very important that everything is in this one HTML file you're creating. No external files. 
 Make sure to format the JSON correctly and escape all characters necessary.
-Do not do any whitespace.
-It's very important that if you want to do a backspace, use \\n and never only use one backslash.`,
+It's very important that you use \\n and never only use one backslash.
+You are not allowed to write any comments in the code, only bare HTML, CSS and JavaScript code. If you see comments remove them but maybe keep in mind what they said.`,
     messages,
     "returnCombined",
     "Returns the combination of html, css and javascript for the planned site to the user",
