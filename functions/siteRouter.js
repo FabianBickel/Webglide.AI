@@ -16,9 +16,9 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
-const buildSiteRouter = express.Router();
+const siteRouter = express.Router();
 
-buildSiteRouter.get("/build", async (request, response) => {
+siteRouter.post("/build", async (request, response) => {
   const prompt = request.body.prompt;
   checkForUndefined(prompt);
 
@@ -50,4 +50,22 @@ buildSiteRouter.get("/build", async (request, response) => {
   response.status(200).json(siteTitle);
 });
 
-export default buildSiteRouter;
+siteRouter.get("/:id", async (request, response) => {
+  const id = request.params.id;
+  checkForUndefined(id);
+
+  const db = admin.firestore();
+
+  const docRef = db.collection("sites").doc(id);
+
+  const doc = await docRef.get();
+
+  if (!doc.exists) {
+    response.status(404).json("Site not found");
+  } else {
+    const site = doc.data();
+    response.status(200).send(site.content);
+  }
+});
+
+export default siteRouter;

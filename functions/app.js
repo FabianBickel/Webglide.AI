@@ -4,7 +4,7 @@ import functions from "firebase-functions";
 
 import express from "express";
 import snippetRouter from "./snippetRouter.js";
-import buildSiteRouter from "./buildSiteRouter.js";
+import siteRouter from "./siteRouter.js";
 
 const app = express();
 const apiRouter = express.Router();
@@ -21,7 +21,7 @@ function addTestingRoutes() {
 
 function addRoutes() {
   apiRouter.use("/snippet", snippetRouter);
-  apiRouter.use("/site", buildSiteRouter);
+  apiRouter.use("/site", siteRouter);
   app.use("/api/v1", apiRouter);
 }
 

@@ -2,8 +2,8 @@
 
 import OpenAI from "openai";
 import checkForUndefined from "./checkForUndefined.js";
-import { json } from "express";
 import { config } from 'dotenv';
+
 config();
 
 const MODEL = "gpt-3.5-turbo-0613";
