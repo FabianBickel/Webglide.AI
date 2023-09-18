@@ -3,6 +3,7 @@
     {
       "source": "functions",
       "codebase": "default",
+      "timeoutSeconds": 200,
       "ignore": [
         "node_modules",
         ".git",
@@ -13,18 +14,16 @@
   ],
   "hosting": {
     "public": "public",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
   },
   "emulators": {
     "functions": {
-      "port": 5001
+      "port": 5001,
+      "timeoutSeconds": 200
     },
     "hosting": {
-      "port": 5000
+      "port": 5000,
+      "timeoutSeconds": 200
     },
     "ui": {
       "enabled": false

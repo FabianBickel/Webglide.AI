@@ -6,7 +6,6 @@ import express from "express";
 import snippetRouter from "./snippetRouter.js";
 import buildSiteRouter from "./buildSiteRouter.js";
 
-
 const app = express();
 const apiRouter = express.Router();
 
@@ -30,4 +29,7 @@ addMiddleware();
 addTestingRoutes();
 addRoutes();
 
-export default functions.region('europe-west6').https.onRequest(app);
+export default functions
+  .region("europe-west6")
+  .runWith({ timeoutSeconds: 300, memory: "256MB" })
+  .https.onRequest(app);
