@@ -37,8 +37,8 @@ siteRouter.post("/build", async (request, response) => {
 
   docRef
     .set({
-      title: siteTitle,
       content: combinedContent,
+      title: siteTitle,
     })
     .then(() => {
       console.log("Document successfully written!");

@@ -1,104 +1,131 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Todo Page</title>
+    <title>Webglide</title>
     <style>
-      /* CSS styles here */
-      .todo-container {
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background-color: #f2f2f2;
         display: flex;
-        flex-direction: column;
-        align-items: center;
         justify-content: center;
-        margin-top: 50px;
+        align-items: center;
       }
-      h1 {
-        font-size: 24px;
-        color: #333;
-        margin-bottom: 20px;
+      .logo {
+        width: 40px;
+        height: auto;
+        margin-right: 10px;
       }
-      input[type="text"] {
-        padding: 8px;
-        margin-right: 8px;
+      .company-name {
+        font-size: 20px;
+        font-weight: bold;
+      }
+      section.intro {
+        background-image: url("https:\/\/static.az-cdn.ch\/__ip\/Cy743ro_vJtltZ-L97gAzJLJBWc\/fc05e9fe0b6b2f6c090f8d49de9dabb84cbf9fe2\/n-wide2x-16x9-far");
+        background-size: cover;
+        background-position: center;
+        height: 500px;
+        display: flex;
+      }
+      .introduction {
+        background-color: rgba(255, 255, 255, 0.8);
+        margin: auto;
+        padding: 20px;
+        max-width: 500px;
+        text-align: center;
+      }
+      table {
+        border-collapse: collapse;
+        margin: 20px auto;
+      }
+      td,
+      th {
+        padding: 10px;
+      }
+      form {
+        margin: 20px auto;
+        max-width: 400px;
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
       }
       button {
-        padding: 8px 16px;
-        background-color: #007bff;
-        color: #fff;
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
         border: none;
         cursor: pointer;
+        margin-top: 10px;
       }
-      ul.task-list {
-        list-style-type: none;
-        padding: 0;
-      }
-      div.task-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 8px;
-      }
-      div.task-item.completed label {
-        text-decoration: line-through;
-      }
-      div.task-item button {
-        margin-left: 8px;
+      footer {
+        background-color: #f2f2f2;
+        padding: 10px;
+        text-align: center;
       }
     </style>
   </head>
   <body>
-    <div class="todo-container">
-      <h1>Todo List</h1>
-      <input type="text" placeholder="Enter task" /><button>Add</button>
-      <ul class="task-list">
-        <li class="task-item">
-          <input type="checkbox" /><label>Task 1</label><button>Delete</button>
-        </li>
-        <li class="task-item">
-          <input type="checkbox" /><label>Task 2</label><button>Delete</button>
-        </li>
-      </ul>
-    </div>
+    <header>
+      <img src="./company_logo.png" alt="Company Logo" class="logo" />
+      <h1 class="company-name">Webglide</h1>
+    </header>
+    <section class="intro">
+      <div class="introduction">
+        <h2>Welcome to Webglide</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+          conguesapien id fermentum consectetur. Suspendisse interdum vel nisl
+          idtincidunt. Nunc scelerisque enim at nisl ultrices, id vestibulumnisl
+          interdum. Nulla rutrum lacus quis ligula aliquet placerat.
+        </p>
+      </div>
+    </section>
+    <section>
+      <h2>Opening Hours</h2>
+      <table>
+        <tr>
+          <th>Day</th>
+          <th>Opening Hours</th>
+        </tr>
+        <tr>
+          <td>Monday - Friday</td>
+          <td>8:00 am - 6:00 pm</td>
+        </tr>
+        <tr>
+          <td>Saturday</td>
+          <td>8:00 am - 1:00 pm</td>
+        </tr>
+      </table>
+    </section>
+    <section>
+      <h2>Contact Us</h2>
+      <form
+        action="mailto:adrian@dinervc.ch"
+        method="POST"
+        enctype="text/plain"
+      >
+        <label for="name">Name</label
+        ><input type="text" id="name" name="name" required /><label for="email"
+          >Email</label
+        ><input type="email" id="email" name="email" required /><label
+          for="subject"
+          >Subject</label
+        ><input type="text" id="subject" name="subject" required /><label
+          for="message"
+          >Message</label
+        ><textarea id="message" name="message" rows="5" required></textarea
+        ><button type="submit">Submit</button>
+      </form>
+    </section>
+    <footer><p>&copy; 2021 Webglide. All rights reserved.</p></footer>
     <script>
-      (function () {
-        const addButton = document.querySelector("button");
-        const inputField = document.querySelector("input[type=text]");
-        const taskList = document.querySelector(".task-list");
-        addButton.addEventListener("click", function () {
-          const taskName = inputField.value;
-          if (taskName) {
-            const listItem = document.createElement("li");
-            listItem.classList.add("task-item");
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            const label = document.createElement("label");
-            label.textContent = taskName;
-            const deleteButton = document.createElement("button");
-            deleteButton.textContent = "Delete";
-            listItem.appendChild(checkbox);
-            listItem.appendChild(label);
-            listItem.appendChild(deleteButton);
-            taskList.appendChild(listItem);
-            inputField.value = "";
-          }
-        });
-        taskList.addEventListener("click", function (event) {
-          const target = event.target;
-          if (
-            target.tagName.toLowerCase() === "input" &&
-            target.type === "checkbox"
-          ) {
-            const listItem = target.closest(".task-item");
-            listItem.classList.toggle("completed");
-          }
-          if (
-            target.tagName.toLowerCase() === "button" &&
-            target.textContent === "Delete"
-          ) {
-            const listItem = target.closest(".task-item");
-            listItem.remove();
-          }
-        });
-      })();
+      console.log("Hello, World!");
     </script>
   </body>
 </html>

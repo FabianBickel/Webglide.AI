@@ -84,8 +84,7 @@ Make sure the JS works with the HTML you created.
 You have to create all the features with JavaScript, you are not allowed to make any placeholder text.
 Make sure to format the JSON correctly and escape all characters necessary.
 Do not do any whitespace.
-It's very important that you use \\n and never only use one backslash.
-If you dont have an information, just fill it in with whatever you like.`,
+It's very important that you use \\n and never only use one backslash.`,
     messages,
     "returnJs",
     "Returns the JS for the planned site to the user",

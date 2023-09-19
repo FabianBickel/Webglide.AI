@@ -6,7 +6,7 @@ import { config } from "dotenv";
 
 config();
 
-const MODEL = "gpt-3.5-turbo-16k-0613";
+const MODEL = "gpt-3.5-turbo-16k";
 const CONTEXT = `
 You are a web developer.
 Your job is it to do what the customer tells you to do.
