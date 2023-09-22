@@ -5,46 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="scripts/htmx.min.js" defer></script>
     <script src="scripts/dynamicBackground.js" defer></script>
 </head>
 <body class="-z-50 bg-black h-full w-full flex justify-center items-center h-screen">
-<div class="-z-40 fixed blu-[150px] h-full w-full opacity-30">
-    <div class="circle absolute w-1/6 h-1/6 rounded-full ease-in-out transition-all duration-[3s]"></div>
-    <div class="circle absolute w-1/6 h-1/6 rounded-full ease-in-out transition-all duration-[3s]"></div>
-    <div class="circle absolute w-1/6 h-1/6 rounded-full ease-in-out transition-all duration-[3s]"></div>
-    <div class="circle absolute w-1/6 h-1/6 rounded-full ease-in-out transition-all duration-[3s]"></div>
-    <div class="circle absolute w-1/6 h-1/6 rounded-full ease-in-out transition-all duration-[3s]"></div>
-    <div class="circle absolute w-1/6 h-1/6 rounded-full ease-in-out transition-all duration-[3s]"></div>
-    <div class="circle absolute w-1/6 h-1/6 rounded-full ease-in-out transition-all duration-[3s]"></div>
-    <div class="circle absolute w-1/6 h-1/6 rounded-full ease-in-out transition-all duration-[3s]"></div>
-    <div class="circle absolute w-1/6 h-1/6 rounded-full ease-in-out transition-all duration-[3s]"></div>
-    <div class="circle absolute w-1/6 h-1/6 rounded-full ease-in-out transition-all duration-[3s]"></div>
-    <div class="circle absolute w-1/6 h-1/6 rounded-full ease-in-out transition-all duration-[3s]"></div>
-    <div class="circle absolute w-1/6 h-1/6 rounded-full ease-in-out transition-all duration-[3s]"></div>
+<div id="dynamicBackground" class="-z-40 fixed blur-[150px] h-full w-full">
+    <!-- Circles get added in JavaScript -->
 </div>
-<div class="w-full flex justify-center items-center h-min gap-4 drop-shadow-md opacity-80
+<div class="w-full flex justify-center items-center h-min gap-4 drop-shadow-md opacity-85
             overflow-hidden h-full">
     <textarea type="text" 
         class="w-1/3 h-16 rounded-[2rem] bg-white flex px-8 py-5 justify-center items-center 
                focus:outline-none resize-none transition[height] ease-in-out duration-300"
-        placeholder="Describe your vision..."
+        placeholder="Describe Your Vision..."
         id="prompt-input"></textarea>
-    <button hx-post="http://localhost:5001/webglide-ai/europe-west6/default/api/v1/site/build"
-        hx-trigger="click"
-        hx-vals='{"prompt":document.getElementById("prompt-input").value}'
+    <button
         id="buildButton"
-        class="h-16 w-16 -mr-20 rounded-full bg-fuchsia-600 flex justify-center items-center
-                opacity-0 transition[margin] ease-out
+        class="h-16 w-16 rounded-full bg-fuchsia-600 flex justify-center items-center
+                transition[margin] ease-out disabled
                 hover:scale-110 hover:bg-fuchsia-400 duration-300">
         <img src="icons/hammer-solid.svg" class="h-6">
     </button>
+    <a class="h-16 w-16 rounded-full bg-sky-600 flex justify-center items-center
+              transition[margin] ease-out cursor-pointer
+              hover:scale-110 hover:bg-sky-400 duration-300"
+        id="viewButton">
+        <img src="icons/arrow-up-right-from-square-solid.svg" class="h-6">
+    </a>
 </div>
 
 <script>
     const textarea = document.getElementById('prompt-input');
     const buildButton = document.getElementById('buildButton');
-    textarea.addEventListener('input', function () {
+
+    textarea.addEventListener('input', reactToInputChange);
+
+    console.log(document.getElementById("viewButton"));
+    
+    function reactToInputChange() {
         // Clone the textarea and set the height to auto
         let clone = this.cloneNode();
         clone.style.height = 'auto';
@@ -60,16 +57,9 @@
             this.style.height = clone.scrollHeight + 'px';
         }
 
-        if (this.value.length === 0) {
-            buildButton.classList.add('-mr-20');
-            buildButton.classList.add('opacity-0');
-            buildButton.disabled = true;
-        } else {
-            buildButton.classList.remove('-mr-20');
-            buildButton.classList.remove('opacity-0');
-            buildButton.disabled = false;
-        }
-    });
+        // Remove the clone
+        document.body.removeChild(clone);
+    }
 </script>
 
 </body>

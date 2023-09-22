@@ -1,107 +1,93 @@
-const circles = document.getElementsByClassName("circle");
-const body = document.getElementsByTagName("body")[0];
-
-const bodyWidth = body.offsetWidth;
-const bodyHeight = body.offsetHeight;
-
 const MIN_ANIMATION_DURATION = 500;
 const MAX_ANIMATION_DURATION = 1000;
 
-colorCircles(circles);
+const AREA_SIZE_PERCENT = 80;
+const CIRCLE_SIZE_PERCENT = 15;
+const CIRCLE_OPACITY = 10;
+const CIRCLE_COUNT = 32;
 
-for (const circle of circles) {
-      const circleWidth = circle.offsetWidth;
-      const circleHeight = circle.offsetHeight;
-      
-      const circleWidthPercent = circleWidth / bodyWidth * 100;
-      const circleHeightPercent = circleHeight / bodyHeight * 100;
+// Wait for DOM to load
+document.addEventListener("DOMContentLoaded", () => {
 
-      const randomFactorX = Math.random() * 50
-      const randomFactorY = Math.random() * 50;
+      const circles = spawnCircles();
+      resetCirclePositions(circles);
+      colorCircles(circles);
+      startShiftCircles(circles);
+});
 
-      const randomOffsetX = randomFactorX + 25  - circleWidthPercent / 2;
-      const randomOffsetY = randomFactorY + 25  - circleHeightPercent / 2;
+function spawnCircles() {
 
-      console.log(randomOffsetX, randomOffsetY);
+      const circleContainer = document.getElementById("dynamicBackground");
+      const circles = [];
 
-      circle.style.left = randomOffsetX + "%";
-      circle.style.top = randomOffsetY + "%";
+      for (let i = 0; i < CIRCLE_COUNT; i++) {
+            const circle = document.createElement("div");
+            circle.style.height = `${CIRCLE_SIZE_PERCENT}%`;
+            circle.style.width = `${CIRCLE_SIZE_PERCENT}%`;
+            circle.style.opacity = `${CIRCLE_OPACITY / 100}`;
+            circle.style.position = "absolute";
+            circleContainer.appendChild(circle);
+            circles.push(circle);
+      }
 
-      // Min and max speed in pixels per second
-      const minSpeed = 10;
-      const maxSpeed = 100;
-
+      return circles;
 }
 
-startShiftCircles(circles, minSpeed, maxSpeed);
+function resetCirclePositions(circles) {
+      for (const circle of circles) {
 
-function startShiftCircles(circles, minSpeed, maxSpeed) {
-      let circleSpeeds = [];
-  
-      for (let i = 0; i < circles.length; i++) {
-          circleSpeeds.push({
-              x: (Math.random() - 0.5) * (maxSpeed - minSpeed) + minSpeed,  // Random initial direction
-              y: (Math.random() - 0.5) * (maxSpeed - minSpeed) + minSpeed
-          });
+            if (!circle) continue;
+
+            const { x, y } = getRandomValidPositionPercent(circle);
+
+            circle.style.left = `${x}%`;
+            circle.style.top = `${y}%`;
       }
-  
-      let lastTimestamp = performance.now();
-  
-      function updateCirclePosition(timestamp) {
-          const deltaTime = timestamp - lastTimestamp;
-          lastTimestamp = timestamp;
-  
-          for (let i = 0; i < circles.length; i++) {
-              const circle = circles[i];
-              const speed = circleSpeeds[i];
-  
-              // Update speed
-              speed.x += (Math.random() - 0.5) * 20;
-              speed.y += (Math.random() - 0.5) * 20;
-  
-              // Clamp the speed
-              speed.x = Math.min(Math.max(speed.x, -maxSpeed), maxSpeed);  // Negative values allow backward movement
-              speed.y = Math.min(Math.max(speed.y, -maxSpeed), maxSpeed);
-  
-              // Get the current position in pixels
-              const bodyWidth = document.body.offsetWidth;
-              const bodyHeight = document.body.offsetHeight;
-  
-              const currentX = (parseFloat(circle.style.left || '0%') / 100) * bodyWidth;
-              const currentY = (parseFloat(circle.style.top || '0%') / 100) * bodyHeight;
-  
-              // Update position
-              const newX = currentX + speed.x * (deltaTime / 1000);
-              const newY = currentY + speed.y * (deltaTime / 1000);
-  
-              // Convert back to percentage for styling
-              circle.style.left = (newX / bodyWidth) * 100 + "%";
-              circle.style.top = (newY / bodyHeight) * 100 + "%";
-          }
-  
-          requestAnimationFrame(updateCirclePosition);
-      }
-  
-      requestAnimationFrame(updateCirclePosition);
-  }
-  
-  
-  
+}
+
+function getRandomValidPositionPercent() {
+
+      const circleCenterOffset = AREA_SIZE_PERCENT / 2 - CIRCLE_SIZE_PERCENT / 2;
+
+      const randomAngle = Math.random() * 360;
+      const randomDistance = Math.random() * circleCenterOffset;
+
+      const offset = 50 - CIRCLE_SIZE_PERCENT / 2;
+
+      const randomXPercent = offset + Math.cos(randomAngle) * randomDistance;
+      const randomYPercent = offset + Math.sin(randomAngle) * randomDistance;
+
+      return { x: randomXPercent, y: randomYPercent };
+}
 
 function colorCircles(circles) {
       const circleCount = circles.length;
 
-      const what = 128 + 256;
-      const step = what / (circleCount - 1);
+      const total = 128 + 256 + 128;
+      const step = total / (circleCount - 1);
 
       for (let i = 0; i < circleCount; i++) {
             const current = step * i;
 
-            const some = 127 + current;
+            const green = Math.max(127 - current, 0);
+            const redBase = Math.max(current - 128 + green, 0);
+            const red = Math.min(redBase, 255);
+            const blueBase = Math.max(current - 384, 0);
+            const blue = 255 - blueBase;
 
-            const red = Math.min(255, some);
-            const blue = Math.max(255 - (some - red), 127);
-
-            circles[i].style.backgroundColor = `rgb(${red}, 0, ${blue})`;
+            circles[i].style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+            console.log(`rgb(${red}, ${green}, ${blue})`);
       }
+}
+
+function startShiftCircles(circles) {
+      let circleTargetMap = new Map();
+
+      for (let i = 0; i < circles.length; i++) {
+            circleTargetMap.set(circles[i], getRandomValidPositionPercent());
+      }
+
+      let lastTimestamp = performance.now();
+
+
 }
