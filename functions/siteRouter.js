@@ -47,7 +47,16 @@ siteRouter.post("/build", async (request, response) => {
       console.error("Error writing document: ", error);
     });
 
-  response.status(200).json(siteTitle);
+  const responseObject = {
+    id: docRef.id,
+    title: siteTitle,
+  }
+
+  response.status(200).json(responseObject);
+});
+
+siteRouter.get("/sample", async (request, response) => {
+  response.status(200).json({id:"kiWp3g64QpHcg8uKqabb"});
 });
 
 siteRouter.get("/:id", async (request, response) => {
