@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Webglide</title>
+    <style>
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background-color: #f2f2f2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .logo {
+        width: 40px;
+        height: auto;
+        margin-right: 10px;
+      }
+      .company-name {
+        font-size: 20px;
+        font-weight: bold;
+      }
+      section.intro {
+        background-image: url("https:\/\/static.az-cdn.ch\/__ip\/Cy743ro_vJtltZ-L97gAzJLJBWc\/fc05e9fe0b6b2f6c090f8d49de9dabb84cbf9fe2\/n-wide2x-16x9-far");
+        background-size: cover;
+        background-position: center;
+        height: 500px;
+        display: flex;
+      }
+      .introduction {
+        background-color: rgba(255, 255, 255, 0.8);
+        margin: auto;
+        padding: 20px;
+        max-width: 500px;
+        text-align: center;
+      }
+      table {
+        border-collapse: collapse;
+        margin: 20px auto;
+      }
+      td,
+      th {
+        padding: 10px;
+      }
+      form {
+        margin: 20px auto;
+        max-width: 400px;
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      footer {
+        background-color: #f2f2f2;
+        padding: 10px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img src="./company_logo.png" alt="Company Logo" class="logo" />
+      <h1 class="company-name">Webglide</h1>
+    </header>
+    <section class="intro">
+      <div class="introduction">
+        <h2>Welcome to Webglide</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+          conguesapien id fermentum consectetur. Suspendisse interdum vel nisl
+          idtincidunt. Nunc scelerisque enim at nisl ultrices, id vestibulumnisl
+          interdum. Nulla rutrum lacus quis ligula aliquet placerat.
+        </p>
+      </div>
+    </section>
+    <section>
+      <h2>Opening Hours</h2>
+      <table>
+        <tr>
+          <th>Day</th>
+          <th>Opening Hours</th>
+        </tr>
+        <tr>
+          <td>Monday - Friday</td>
+          <td>8:00 am - 6:00 pm</td>
+        </tr>
+        <tr>
+          <td>Saturday</td>
+          <td>8:00 am - 1:00 pm</td>
+        </tr>
+      </table>
+    </section>
+    <section>
+      <h2>Contact Us</h2>
+      <form
+        action="mailto:adrian@dinervc.ch"
+        method="POST"
+        enctype="text/plain"
+      >
+        <label for="name">Name</label
+        ><input type="text" id="name" name="name" required /><label for="email"
+          >Email</label
+        ><input type="email" id="email" name="email" required /><label
+          for="subject"
+          >Subject</label
+        ><input type="text" id="subject" name="subject" required /><label
+          for="message"
+          >Message</label
+        ><textarea id="message" name="message" rows="5" required></textarea
+        ><button type="submit">Submit</button>
+      </form>
+    </section>
+    <footer><p>&copy; 2021 Webglide. All rights reserved.</p></footer>
+    <script>
+      console.log("Hello, World!");
+    </script>
+  </body>
+</html>
