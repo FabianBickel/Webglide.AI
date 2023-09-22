@@ -56,7 +56,7 @@ siteRouter.post("/build", async (request, response) => {
 });
 
 siteRouter.get("/sample", async (request, response) => {
-  response.status(200).json({id:"kiWp3g64QpHcg8uKqabb"});
+  response.status(200).json({id:"kiWp3g64QpHcg8uKqabb", title:"Todo App"});
 });
 
 siteRouter.get("/:id", async (request, response) => {
