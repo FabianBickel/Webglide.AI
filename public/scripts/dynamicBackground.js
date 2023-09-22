@@ -1,10 +1,10 @@
 const MIN_ANIMATION_DURATION = 500;
 const MAX_ANIMATION_DURATION = 1000;
 
-const AREA_SIZE_PERCENT = 80;
-const CIRCLE_SIZE_PERCENT = 15;
-const CIRCLE_OPACITY = 10;
-const CIRCLE_COUNT = 32;
+const AREA_SIZE_PERCENT = 90;
+const CIRCLE_SIZE_PERCENT = 20;
+const CIRCLE_OPACITY = 50;
+const CIRCLE_COUNT = 8;
 
 // Wait for DOM to load
 document.addEventListener("DOMContentLoaded", () => {
@@ -38,7 +38,7 @@ function resetCirclePositions(circles) {
 
             if (!circle) continue;
 
-            const { x, y } = getRandomValidPositionPercent(circle);
+            const { x, y } = getRandomValidPositionPercent();
 
             circle.style.left = `${x}%`;
             circle.style.top = `${y}%`;
