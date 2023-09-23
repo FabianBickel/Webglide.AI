@@ -1,67 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Webglide</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="scripts/dynamicBackground.js" defer></script>
-</head>
-<body class="-z-50 bg-black h-full w-full flex justify-center items-center h-screen">
-<div id="dynamicBackground" class="-z-40 fixed blur-[150px] h-full w-full">
-    <!-- Circles get added in JavaScript -->
-</div>
-<div class="w-full flex justify-center items-center h-min gap-4 drop-shadow-md opacity-85
-            overflow-hidden h-full">
-    <textarea type="text" 
-        class="w-1/3 h-16 rounded-[2rem] bg-white flex px-8 py-5 justify-center items-center 
-               focus:outline-none resize-none transition[height] ease-in-out duration-300"
+  </head>
+  <body
+    class="-z-50 bg-black h-full w-full flex justify-center items-center h-screen"
+  >
+    <div id="dynamicBackground" class="-z-40 fixed blur-[150px] h-full w-full">
+      <!-- Circles get added in JavaScript -->
+    </div>
+    <div
+      class="w-full flex justify-center items-center h-min gap-4 drop-shadow-md opacity-85 overflow-hidden h-full"
+    >
+      <textarea
+        type="text"
+        class="w-1/3 h-16 rounded-[2rem] bg-white flex px-8 py-5 justify-center items-center focus:outline-none resize-none transition[height] ease-in-out duration-300"
         placeholder="Describe Your Vision..."
-        id="prompt-input"></textarea>
-    <button
+        id="prompt-input"
+      ></textarea>
+      <button
         id="buildButton"
-        class="h-16 w-16 rounded-full bg-fuchsia-600 flex justify-center items-center
-                transition[margin] ease-out disabled
-                hover:scale-110 hover:bg-fuchsia-400 duration-300">
-        <img src="icons/hammer-solid.svg" class="h-6">
-    </button>
-    <a class="h-16 w-16 rounded-full bg-sky-600 flex justify-center items-center
-              transition[margin] ease-out cursor-pointer
-              hover:scale-110 hover:bg-sky-400 duration-300"
-        id="viewButton">
-        <img src="icons/arrow-up-right-from-square-solid.svg" class="h-6">
-    </a>
-</div>
+        class="h-16 w-16 rounded-full bg-fuchsia-600 flex justify-center items-center transition[margin] ease-out disabled hover:scale-110 hover:bg-fuchsia-400 duration-300"
+      >
+        <img src="icons/hammer-solid.svg" class="h-6" />
+      </button>
+      <a
+        class="h-16 w-16 rounded-full bg-sky-600 flex justify-center items-center transition[margin] ease-out cursor-pointer hover:scale-110 hover:bg-sky-400 duration-300"
+        id="viewButton"
+      >
+        <img src="icons/arrow-up-right-from-square-solid.svg" class="h-6" />
+      </a>
+    </div>
 
-<script>
-    const textarea = document.getElementById('prompt-input');
-    const buildButton = document.getElementById('buildButton');
+    <script>
+      const textarea = document.getElementById("prompt-input");
+      const buildButton = document.getElementById("buildButton");
 
-    textarea.addEventListener('input', reactToInputChange);
+      textarea.addEventListener("input", reactToInputChange);
 
-    console.log(document.getElementById("viewButton"));
-    
-    function reactToInputChange() {
+      console.log(document.getElementById("viewButton"));
+
+      function reactToInputChange() {
         // Clone the textarea and set the height to auto
         let clone = this.cloneNode();
-        clone.style.height = 'auto';
-        clone.style.visibility = 'hidden';
-        clone.style.position = 'absolute';
+        clone.style.height = "auto";
+        clone.style.visibility = "hidden";
+        clone.style.position = "absolute";
         document.body.appendChild(clone);
         clone.value = this.value;
 
         // If the clone's scrollHeight equals its clientHeight, it's likely one line
-        if (Math.abs(clone.scrollHeight - clone.clientHeight) <= 0) {  // Increased buffer to 20
-            this.style.height = '';  // Reset to default CSS height
+        if (Math.abs(clone.scrollHeight - clone.clientHeight) <= 0) {
+          // Increased buffer to 20
+          this.style.height = ""; // Reset to default CSS height
         } else {
-            this.style.height = clone.scrollHeight + 'px';
+          this.style.height = clone.scrollHeight + "px";
         }
 
         // Remove the clone
         document.body.removeChild(clone);
-    }
-</script>
-
-</body>
+      }
+    </script>
+  </body>
 </html>
-

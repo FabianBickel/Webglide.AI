@@ -1,131 +1,167 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Webglide</title>
+    <title>Workout Tracker</title>
     <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
       header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 60px;
-        background-color: #f2f2f2;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .logo {
-        width: 40px;
-        height: auto;
-        margin-right: 10px;
-      }
-      .company-name {
-        font-size: 20px;
-        font-weight: bold;
-      }
-      section.intro {
-        background-image: url("https:\/\/static.az-cdn.ch\/__ip\/Cy743ro_vJtltZ-L97gAzJLJBWc\/fc05e9fe0b6b2f6c090f8d49de9dabb84cbf9fe2\/n-wide2x-16x9-far");
-        background-size: cover;
-        background-position: center;
-        height: 500px;
-        display: flex;
-      }
-      .introduction {
-        background-color: rgba(255, 255, 255, 0.8);
-        margin: auto;
+        background-color: #333;
+        color: #fff;
         padding: 20px;
-        max-width: 500px;
         text-align: center;
       }
-      table {
-        border-collapse: collapse;
-        margin: 20px auto;
+      h1 {
+        margin: 0;
       }
-      td,
-      th {
-        padding: 10px;
+      main {
+        padding: 20px;
       }
-      form {
-        margin: 20px auto;
-        max-width: 400px;
+      section#workout-form {
+        margin-bottom: 20px;
       }
-      input,
-      textarea {
-        width: 100%;
+      section#workout-form h2,
+      section#workout-list h2 {
+        margin: 0 0 10px 0;
+      }
+      form#add-workout-form {
+        display: flex;
+        align-items: center;
+      }
+      label {
+        padding-right: 10px;
+      }
+      input[type="text"] {
+        padding: 5px;
+        margin-right: 10px;
+      }
+      button {
+        padding: 5px 10px;
+        margin-left: 10px;
+      }
+      section#workout-list .workout-container {
+        border: 1px solid #999;
         padding: 10px;
         margin-bottom: 10px;
       }
-      button {
-        background-color: #4caf50;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        cursor: pointer;
-        margin-top: 10px;
-      }
-      footer {
-        background-color: #f2f2f2;
-        padding: 10px;
-        text-align: center;
+      .exercise-container {
+        margin-bottom: 10px;
       }
     </style>
   </head>
   <body>
-    <header>
-      <img src="./company_logo.png" alt="Company Logo" class="logo" />
-      <h1 class="company-name">Webglide</h1>
-    </header>
-    <section class="intro">
-      <div class="introduction">
-        <h2>Welcome to Webglide</h2>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-          conguesapien id fermentum consectetur. Suspendisse interdum vel nisl
-          idtincidunt. Nunc scelerisque enim at nisl ultrices, id vestibulumnisl
-          interdum. Nulla rutrum lacus quis ligula aliquet placerat.
-        </p>
-      </div>
-    </section>
-    <section>
-      <h2>Opening Hours</h2>
-      <table>
-        <tr>
-          <th>Day</th>
-          <th>Opening Hours</th>
-        </tr>
-        <tr>
-          <td>Monday - Friday</td>
-          <td>8:00 am - 6:00 pm</td>
-        </tr>
-        <tr>
-          <td>Saturday</td>
-          <td>8:00 am - 1:00 pm</td>
-        </tr>
-      </table>
-    </section>
-    <section>
-      <h2>Contact Us</h2>
-      <form
-        action="mailto:adrian@dinervc.ch"
-        method="POST"
-        enctype="text/plain"
-      >
-        <label for="name">Name</label
-        ><input type="text" id="name" name="name" required /><label for="email"
-          >Email</label
-        ><input type="email" id="email" name="email" required /><label
-          for="subject"
-          >Subject</label
-        ><input type="text" id="subject" name="subject" required /><label
-          for="message"
-          >Message</label
-        ><textarea id="message" name="message" rows="5" required></textarea
-        ><button type="submit">Submit</button>
-      </form>
-    </section>
-    <footer><p>&copy; 2021 Webglide. All rights reserved.</p></footer>
+    <header><h1>Workout Tracker</h1></header>
+    <main>
+      <section id="workout-form">
+        <h2>Create New Workout</h2>
+        <form id="add-workout-form">
+          <label for="workout-name">Workout Name:</label
+          ><input type="text" id="workout-name" /><button id="add-exercise-btn">
+            Add Exercise</button
+          ><button type="submit">Submit</button>
+        </form>
+      </section>
+      <section id="workout-list"><h2>Workout List</h2></section>
+    </main>
     <script>
-      console.log("Hello, World!");
+      const workoutList = [];
+      function addWorkout(event) {
+        event.preventDefault();
+        const workoutName = document.getElementById("workout-name").value;
+        const newWorkout = { name: workoutName, exercises: [] };
+        workoutList.push(newWorkout);
+        document.getElementById("add-workout-form").reset();
+        displayWorkoutList();
+      }
+      function addExercise(event, workoutIndex) {
+        event.preventDefault();
+        const exerciseName = prompt("Enter exercise name:");
+        const sets = prompt("Enter number of sets:");
+        const reps = prompt("Enter number of reps:");
+        const newExercise = { name: exerciseName, sets: sets, reps: reps };
+        workoutList[workoutIndex].exercises.push(newExercise);
+        displayWorkoutList();
+      }
+      function editWorkout(workoutIndex) {
+        const newWorkoutName = prompt("Enter new workout name:");
+        workoutList[workoutIndex].name = newWorkoutName;
+        displayWorkoutList();
+      }
+      function deleteWorkout(workoutIndex) {
+        workoutList.splice(workoutIndex, 1);
+        displayWorkoutList();
+      }
+      function editExercise(workoutIndex, exerciseIndex) {
+        const newExerciseName = prompt("Enter new exercise name:");
+        const newSets = prompt("Enter new number of sets:");
+        const newReps = prompt("Enter new number of reps:");
+        workoutList[workoutIndex].exercises[exerciseIndex].name =
+          newExerciseName;
+        workoutList[workoutIndex].exercises[exerciseIndex].sets = newSets;
+        workoutList[workoutIndex].exercises[exerciseIndex].reps = newReps;
+        displayWorkoutList();
+      }
+      function deleteExercise(workoutIndex, exerciseIndex) {
+        workoutList[workoutIndex].exercises.splice(exerciseIndex, 1);
+        displayWorkoutList();
+      }
+      function displayWorkoutList() {
+        const workoutListSection = document.getElementById("workout-list");
+        workoutListSection.innerHTML = "";
+        for (let i = 0; i < workoutList.length; i++) {
+          const workoutContainer = document.createElement("div");
+          workoutContainer.classList.add("workout-container");
+          const workoutName = document.createElement("h3");
+          workoutName.innerText = workoutList[i].name;
+          const editWorkoutBtn = document.createElement("button");
+          editWorkoutBtn.innerText = "Edit Workout";
+          editWorkoutBtn.addEventListener("click", () => editWorkout(i));
+          const deleteWorkoutBtn = document.createElement("button");
+          deleteWorkoutBtn.innerText = "Delete Workout";
+          deleteWorkoutBtn.addEventListener("click", () => deleteWorkout(i));
+          const exercisesSection = document.createElement("section");
+          exercisesSection.classList.add("exercises-section");
+          for (let j = 0; j < workoutList[i].exercises.length; j++) {
+            const exerciseContainer = document.createElement("div");
+            exerciseContainer.classList.add("exercise-container");
+            const exerciseName = document.createElement("p");
+            exerciseName.innerText = `Exercise: ${workoutList[i].exercises[j].name}`;
+            const setsReps = document.createElement("p");
+            setsReps.innerText = `Sets: ${workoutList[i].exercises[j].sets} Reps: ${workoutList[i].exercises[j].reps}`;
+            const editExerciseBtn = document.createElement("button");
+            editExerciseBtn.innerText = "Edit Exercise";
+            editExerciseBtn.addEventListener("click", () => editExercise(i, j));
+            const deleteExerciseBtn = document.createElement("button");
+            deleteExerciseBtn.innerText = "Delete Exercise";
+            deleteExerciseBtn.addEventListener("click", () =>
+              deleteExercise(i, j)
+            );
+            exerciseContainer.appendChild(exerciseName);
+            exerciseContainer.appendChild(setsReps);
+            exerciseContainer.appendChild(editExerciseBtn);
+            exerciseContainer.appendChild(deleteExerciseBtn);
+            exercisesSection.appendChild(exerciseContainer);
+          }
+          const addExerciseBtn = document.createElement("button");
+          addExerciseBtn.innerText = "Add Exercise";
+          addExerciseBtn.addEventListener("click", (event) =>
+            addExercise(event, i)
+          );
+          workoutContainer.appendChild(workoutName);
+          workoutContainer.appendChild(editWorkoutBtn);
+          workoutContainer.appendChild(deleteWorkoutBtn);
+          workoutContainer.appendChild(exercisesSection);
+          workoutContainer.appendChild(addExerciseBtn);
+          workoutListSection.appendChild(workoutContainer);
+        }
+      }
+      window.onload = function () {
+        const addWorkoutForm = document.getElementById("add-workout-form");
+        addWorkoutForm.addEventListener("submit", addWorkout);
+      };
     </script>
   </body>
 </html>
