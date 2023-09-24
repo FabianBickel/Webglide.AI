@@ -44,10 +44,10 @@ First think about what you need to include in the HTML with Bootstrap included a
   messageThread = jsResponseObject.messages;
   console.log("Done!");
 
-  console.log("GPT is creating CSS...");
-  const cssResponseObject = await getCss(messageThread);
-  const css = cssResponseObject.arguments.css;
-  messageThread = cssResponseObject.messages;
+  console.log("GPT is creating Bootstrap...");
+  const bootstrapResponseObject = await getBootstrap(messageThread);
+  const bootstrap = bootstrapResponseObject.arguments.bootstrap;
+  messageThread = bootstrapResponseObject.messages;
   console.log("Done!");
 
   console.log("GPT is combining code...");
@@ -95,8 +95,8 @@ Make sure to follow ES6+ standards.`,
   return jsPromise;
 }
 
-function getCss(messages) {
-  const cssPromise = getPromise(
+function getBootstrap(messages) {
+  const bootstrapPromise = getPromise(
     `You are now creating the bootstrap for the planned site.
 Make sure the bootstrap works with the HTML you created.
 To import bootstrap, use the following code: ' <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>'.
@@ -105,12 +105,12 @@ It's very important that you use \\n and never only use one backslash.
 If you dont have an information, just fill it in with whatever you like.
 Keep in mind that things like gradients, border radius and animations are very visually appealing and you should implement as much as possible.`,
     messages,
-    "returnCss",
-    "Returns the CSS for the planned site to the user",
-    "css",
+    "returnBootstrap",
+    "Returns the Bootstrap for the planned site to the user",
+    "bootstrap",
     "The code you want to return to the user"
   );
-  return cssPromise;
+  return bootstrapPromise;
 }
 
 function getCombined(messages) {
@@ -124,7 +124,7 @@ It's very important that you use \\n and never only use one backslash.
 You are not allowed to write any comments in the code, only bare HTML including bootstrap and JavaScript code. If you see comments remove them but maybe keep in mind what they said.`,
     messages,
     "returnCombined",
-    "Returns the combination of html, css and javascript for the planned site to the user",
+    "Returns the combination of html, bootstrap and javascript for the planned site to the user",
     "combined",
     "The code you want to return to the user"
   );
