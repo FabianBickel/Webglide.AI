@@ -43,7 +43,6 @@
       const viewButton = document.getElementById("viewButton");
 
       textarea.addEventListener("input", reactToInputChange);
-      console.log(document.getElementById("viewButton"));
       buildButton.addEventListener("click", buildSite);
 
       function reactToInputChange() {
@@ -62,7 +61,7 @@
       async function buildSite() {
         const prompt = textarea.value;
         const apiUrl =
-          "http://localhost:5001/webglide-ai/europe-west6/default/api/v1";
+          "https://europe-west6-webglide-ai.cloudfunctions.net/default/api/v1";
         const siteUrl = `${apiUrl}/site`;
 
         buildButton.disabled = true;

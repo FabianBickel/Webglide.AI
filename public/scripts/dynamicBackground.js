@@ -76,7 +76,6 @@ function colorCircles(circles) {
             const blue = 255 - blueBase;
 
             circles[i].style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
-            console.log(`rgb(${red}, ${green}, ${blue})`);
       }
 }
 
