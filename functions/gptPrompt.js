@@ -9,7 +9,7 @@ config();
 const MODEL = "gpt-4";
 const CONTEXT = `
 You are a web developer.
-Your job is it to do what the customer tells you to do.
+Your job is it to create a website with HTML, bootstrap and JavaScript based on what the customer tells you.
 `;
 
 const openai = new OpenAI({
