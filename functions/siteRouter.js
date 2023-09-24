@@ -46,13 +46,6 @@ siteRouter.post("/build", async (request, response) => {
   response.status(200).json(responseObject);
 });
 
-siteRouter.post("/sample", async (request, response) => {
-  console.log(request);
-  response
-    .status(200)
-    .json({ id: "vS18bYLIDDdmaPT7FTyj", title: "Company Landing Page" });
-});
-
 siteRouter.get("/:id", async (request, response) => {
   const id = request.params.id;
   checkForUndefined(id);
