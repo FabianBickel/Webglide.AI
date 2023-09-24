@@ -16,6 +16,9 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
+const db = admin.firestore();
+const siteCollection = db.collection("sites");
+
 const siteRouter = express.Router();
 
 siteRouter.post("/build", async (request, response) => {
@@ -26,14 +29,12 @@ siteRouter.post("/build", async (request, response) => {
   const webPage = await sitePromise;
   const combinedContent = webPage.combined;
 
-  const db = admin.firestore();
-
   // Extract title from combinedContent
   const titleMatch = combinedContent.match(/<title>(.*?)<\/title>/);
   const siteTitle = titleMatch ? titleMatch[1] : "Untitled";
 
   // Create a new document with an auto-generated ID in the "sites" collection
-  const docRef = db.collection("sites").doc();
+  siteCollection.doc();
 
   docRef
     .set({
@@ -50,23 +51,20 @@ siteRouter.post("/build", async (request, response) => {
   const responseObject = {
     id: docRef.id,
     title: siteTitle,
-  }
+  };
 
   response.status(200).json(responseObject);
 });
 
 siteRouter.get("/sample", async (request, response) => {
-  response.status(200).json({id:"kiWp3g64QpHcg8uKqabb", title:"Todo App"});
+  console.log(request);
 });
 
 siteRouter.get("/:id", async (request, response) => {
   const id = request.params.id;
   checkForUndefined(id);
 
-  const db = admin.firestore();
-
-  const docRef = db.collection("sites").doc(id);
-
+  const docRef = siteCollection.doc(id);
   const doc = await docRef.get();
 
   if (!doc.exists) {
