@@ -25,28 +25,18 @@ siteRouter.post("/build", async (request, response) => {
   const prompt = request.body.prompt;
   checkForUndefined(prompt);
 
-  const sitePromise = buildSite(prompt);
-  const webPage = await sitePromise;
+  const webPage = await buildSite(prompt);
   const combinedContent = webPage.combined;
 
-  // Extract title from combinedContent
   const titleMatch = combinedContent.match(/<title>(.*?)<\/title>/);
   const siteTitle = titleMatch ? titleMatch[1] : "Untitled";
 
-  // Create a new document with an auto-generated ID in the "sites" collection
-  siteCollection.doc();
+  const docRef = siteCollection.doc(); // Declare docRef here
 
-  docRef
-    .set({
-      content: combinedContent,
-      title: siteTitle,
-    })
-    .then(() => {
-      console.log("Document successfully written!");
-    })
-    .catch((error) => {
-      console.error("Error writing document: ", error);
-    });
+  await docRef.set({
+    content: combinedContent,
+    title: siteTitle,
+  });
 
   const responseObject = {
     id: docRef.id,
@@ -56,9 +46,11 @@ siteRouter.post("/build", async (request, response) => {
   response.status(200).json(responseObject);
 });
 
-siteRouter.get("/sample", async (request, response) => {
+siteRouter.post("/sample", async (request, response) => {
   console.log(request);
-  response.status(200).json({ id: "vS18bYLIDDdmaPT7FTyj", title: "Company Landing Page"});
+  response
+    .status(200)
+    .json({ id: "vS18bYLIDDdmaPT7FTyj", title: "Company Landing Page" });
 });
 
 siteRouter.get("/:id", async (request, response) => {

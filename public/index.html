@@ -1,94 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Webglide</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="scripts/dynamicBackground.js" defer></script>
-</head>
+  </head>
 
-<body class="-z-50 bg-black h-full w-full flex justify-center items-center h-screen">
+  <body
+    class="-z-50 bg-black h-full w-full flex justify-center items-center h-screen"
+  >
     <div id="dynamicBackground" class="-z-40 fixed blur-[150px] h-full w-full">
-        <!-- Circles get added in JavaScript -->
+      <!-- Circles get added in JavaScript -->
     </div>
-    <div class="w-full h-full flex justify-center items-center gap-4 drop-shadow-md opacity-85 overflow-hidden h-full">
-        <textarea id="prompt-input"
-            class="w-1/3 rounded-[2rem] bg-white flex px-8 py-5 justify-center items-center focus:outline-none resize-none transition[height] ease-in-out duration-300"
-            type="text" placeholder="Describe Your Vision..."></textarea>
-        <button id="buildButton"
-            class="h-16 w-16 rounded-full bg-fuchsia-600 flex justify-center items-center transition[margin] ease-out hover:scale-110 hover:bg-fuchsia-400 duration-300">
-            <img src="icons/hammer-solid.svg" class="h-6" />
-        </button>
-        <a id="viewButton"
-            class="h-16 w-16 rounded-full bg-sky-600 flex justify-center items-center transition[margin] ease-out cursor-pointer hover:scale-110 hover:bg-sky-400 duration-300 -mr-18 hidden">
-            <img src="icons/arrow-up-right-from-square-solid.svg" class="h-6" />
-        </a>
-
+    <div
+      class="w-full h-full flex justify-center items-center gap-4 drop-shadow-md opacity-85 overflow-hidden h-full"
+    >
+      <textarea
+        id="prompt-input"
+        class="w-1/3 rounded-[2rem] bg-white flex px-8 py-5 justify-center items-center focus:outline-none resize-none transition[height] ease-in-out duration-300"
+        type="text"
+        placeholder="Describe Your Vision..."
+      ></textarea>
+      <button
+        id="buildButton"
+        class="h-16 w-16 rounded-full bg-fuchsia-600 flex justify-center items-center transition[margin] ease-out hover:scale-110 hover:bg-fuchsia-400 duration-300"
+      >
+        <img src="icons/hammer-solid.svg" class="h-6" />
+      </button>
+      <a
+        id="viewButton"
+        class="h-16 w-16 rounded-full bg-sky-600 flex justify-center items-center transition[margin] ease-out cursor-pointer hover:scale-110 hover:bg-sky-400 duration-300 -mr-18 hidden"
+      >
+        <img src="icons/arrow-up-right-from-square-solid.svg" class="h-6" />
+      </a>
     </div>
 
     <script>
-        const textarea = document.getElementById("prompt-input");
-        const buildButton = document.getElementById("buildButton");
-        const viewButton = document.getElementById("viewButton");
+      const textarea = document.getElementById("prompt-input");
+      const buildButton = document.getElementById("buildButton");
+      const viewButton = document.getElementById("viewButton");
 
-        textarea.addEventListener("input", reactToInputChange);
-        console.log(document.getElementById("viewButton"));
-        buildButton.addEventListener("click", buildSite);
+      textarea.addEventListener("input", reactToInputChange);
+      console.log(document.getElementById("viewButton"));
+      buildButton.addEventListener("click", buildSite);
 
-        function reactToInputChange() {
-            // Clone the textarea and set the height to auto
-            let clone = this.cloneNode();
-            clone.style.height = "auto";
-            clone.style.visibility = "hidden";
-            clone.style.position = "absolute";
-            document.body.appendChild(clone);
-            clone.value = this.value;
+      function reactToInputChange() {
+        // Clone the textarea and set the height to auto
+        let clone = this.cloneNode();
+        clone.style.height = "auto";
+        clone.style.visibility = "hidden";
+        clone.style.position = "absolute";
+        document.body.appendChild(clone);
+        clone.value = this.value;
 
-            this.style.height = clone.scrollHeight + "px";
-            document.body.removeChild(clone);
-        }
+        this.style.height = clone.scrollHeight + "px";
+        document.body.removeChild(clone);
+      }
 
-        async function buildSite() {
-            const prompt = textarea.value;
-            const apiUrl = "http://localhost:5001/webglide-ai/europe-west6/default/api/v1";
-            const siteUrl = `${apiUrl}/site`;
+      async function buildSite() {
+        const prompt = textarea.value;
+        const apiUrl =
+          "http://localhost:5001/webglide-ai/europe-west6/default/api/v1";
+        const siteUrl = `${apiUrl}/site`;
 
-            buildButton.disabled = true;
-            buildButton.style.opacity = 0;
-            buildButton.classList.add("-ml-18");
+        buildButton.disabled = true;
+        buildButton.style.opacity = 0;
+        buildButton.classList.add("-ml-18");
 
-            buildButton.classList.forEach((className) => {
-                if (className.startsWith("hover:")) {
-                    buildButton.classList.remove(className);
-                }
-            });
+        buildButton.classList.forEach((className) => {
+          if (className.startsWith("hover:")) {
+            buildButton.classList.remove(className);
+          }
+        });
 
-            textarea.disabled = true;
-            textarea.classList.add("opacity-50");
+        textarea.disabled = true;
+        textarea.classList.add("opacity-50");
 
-            fetch(`${siteUrl}/sample`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ prompt: prompt })
-            })
-                .then(response => { console.log(response); response.json(); })
-                .then(data => {
-                    const id = data.id;
-                    console.log(`Retrieved ID: ${id}`);
+        fetch(`${siteUrl}/sample`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ prompt: prompt }),
+        })
+          .then((response) => {
+            console.log(response);
+            return response.json();
+          })
+          .then((data) => {
+            const id = data.id;
+            console.log(`Retrieved ID: ${id}`);
 
-                    viewButton.style.opacity = 0;
-                    viewButton.classList.remove("hidden");
-                    viewButton.classList.opacity = 1;
-                    viewButton.href = `${siteUrl}/${data.id}`;
-                    viewButton.target = "_blank";
-                })
-                .catch(error => console.error("Error:", error));
-        }
+            viewButton.style.opacity = 0;
+            viewButton.classList.remove("hidden");
+            viewButton.style.opacity = 1;
+            viewButton.href = `${siteUrl}/${data.id}`;
+            viewButton.target = "_blank";
+          })
+          .catch((error) => console.error("Error:", error));
+      }
     </script>
-</body>
-
+  </body>
 </html>
