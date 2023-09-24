@@ -1,167 +1,98 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Workout Tracker</title>
+    <title>Todo List</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
     <style>
       body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
+        background: linear-gradient(to right, #f3f3f3, #ffffff);
       }
-      header {
-        background-color: #333;
-        color: #fff;
-        padding: 20px;
-        text-align: center;
+      .navbar {
+        border-radius: 0;
       }
-      h1 {
-        margin: 0;
+      #task-form button {
+        width: 100%;
+        margin-top: 1rem;
       }
-      main {
-        padding: 20px;
+      .list-group-item {
+        border: none;
+        box-shadow: 0px 1px 2px #ddd;
       }
-      section#workout-form {
-        margin-bottom: 20px;
+      .list-group-item:last-child {
+        margin-bottom: 1rem;
+        border-bottom-right-radius: 0.25rem;
+        border-bottom-left-radius: 0.25rem;
       }
-      section#workout-form h2,
-      section#workout-list h2 {
-        margin: 0 0 10px 0;
+      #task-list .delete {
+        visibility: hidden;
       }
-      form#add-workout-form {
-        display: flex;
-        align-items: center;
-      }
-      label {
-        padding-right: 10px;
-      }
-      input[type="text"] {
-        padding: 5px;
-        margin-right: 10px;
-      }
-      button {
-        padding: 5px 10px;
-        margin-left: 10px;
-      }
-      section#workout-list .workout-container {
-        border: 1px solid #999;
-        padding: 10px;
-        margin-bottom: 10px;
-      }
-      .exercise-container {
-        margin-bottom: 10px;
+      #task-list .list-group-item:hover .delete {
+        visibility: visible;
       }
     </style>
   </head>
   <body>
-    <header><h1>Workout Tracker</h1></header>
-    <main>
-      <section id="workout-form">
-        <h2>Create New Workout</h2>
-        <form id="add-workout-form">
-          <label for="workout-name">Workout Name:</label
-          ><input type="text" id="workout-name" /><button id="add-exercise-btn">
-            Add Exercise</button
-          ><button type="submit">Submit</button>
-        </form>
-      </section>
-      <section id="workout-list"><h2>Workout List</h2></section>
-    </main>
+    <nav class="navbar navbar-light bg-light">
+      <a class="navbar-brand">Todo App</a>
+    </nav>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <div class="card mt-5">
+            <div class="card-header">Todo List</div>
+            <div class="card-body">
+              <form id="task-form">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    id="task-input"
+                    class="form-control"
+                    placeholder="Enter Task..."
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary">Add</button>
+              </form>
+              <ul id="task-list" class="list-group mt-4"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
-      const workoutList = [];
-      function addWorkout(event) {
-        event.preventDefault();
-        const workoutName = document.getElementById("workout-name").value;
-        const newWorkout = { name: workoutName, exercises: [] };
-        workoutList.push(newWorkout);
-        document.getElementById("add-workout-form").reset();
-        displayWorkoutList();
+      "use strict";
+      const taskForm = document.querySelector("#task-form");
+      const taskInput = document.querySelector("#task-input");
+      const taskList = document.querySelector("#task-list");
+      loadEventListeners();
+      function loadEventListeners() {
+        taskForm.addEventListener("submit", addTask);
       }
-      function addExercise(event, workoutIndex) {
-        event.preventDefault();
-        const exerciseName = prompt("Enter exercise name:");
-        const sets = prompt("Enter number of sets:");
-        const reps = prompt("Enter number of reps:");
-        const newExercise = { name: exerciseName, sets: sets, reps: reps };
-        workoutList[workoutIndex].exercises.push(newExercise);
-        displayWorkoutList();
+      function addTask(e) {
+        e.preventDefault();
+        const li = document.createElement("li");
+        li.className = "list-group-item d-flex justify-content-between";
+        li.appendChild(document.createTextNode(taskInput.value));
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "delete btn btn-danger";
+        deleteBtn.appendChild(document.createTextNode("Delete"));
+        li.appendChild(deleteBtn);
+        taskList.appendChild(li);
+        taskInput.value = "";
       }
-      function editWorkout(workoutIndex) {
-        const newWorkoutName = prompt("Enter new workout name:");
-        workoutList[workoutIndex].name = newWorkoutName;
-        displayWorkoutList();
-      }
-      function deleteWorkout(workoutIndex) {
-        workoutList.splice(workoutIndex, 1);
-        displayWorkoutList();
-      }
-      function editExercise(workoutIndex, exerciseIndex) {
-        const newExerciseName = prompt("Enter new exercise name:");
-        const newSets = prompt("Enter new number of sets:");
-        const newReps = prompt("Enter new number of reps:");
-        workoutList[workoutIndex].exercises[exerciseIndex].name =
-          newExerciseName;
-        workoutList[workoutIndex].exercises[exerciseIndex].sets = newSets;
-        workoutList[workoutIndex].exercises[exerciseIndex].reps = newReps;
-        displayWorkoutList();
-      }
-      function deleteExercise(workoutIndex, exerciseIndex) {
-        workoutList[workoutIndex].exercises.splice(exerciseIndex, 1);
-        displayWorkoutList();
-      }
-      function displayWorkoutList() {
-        const workoutListSection = document.getElementById("workout-list");
-        workoutListSection.innerHTML = "";
-        for (let i = 0; i < workoutList.length; i++) {
-          const workoutContainer = document.createElement("div");
-          workoutContainer.classList.add("workout-container");
-          const workoutName = document.createElement("h3");
-          workoutName.innerText = workoutList[i].name;
-          const editWorkoutBtn = document.createElement("button");
-          editWorkoutBtn.innerText = "Edit Workout";
-          editWorkoutBtn.addEventListener("click", () => editWorkout(i));
-          const deleteWorkoutBtn = document.createElement("button");
-          deleteWorkoutBtn.innerText = "Delete Workout";
-          deleteWorkoutBtn.addEventListener("click", () => deleteWorkout(i));
-          const exercisesSection = document.createElement("section");
-          exercisesSection.classList.add("exercises-section");
-          for (let j = 0; j < workoutList[i].exercises.length; j++) {
-            const exerciseContainer = document.createElement("div");
-            exerciseContainer.classList.add("exercise-container");
-            const exerciseName = document.createElement("p");
-            exerciseName.innerText = `Exercise: ${workoutList[i].exercises[j].name}`;
-            const setsReps = document.createElement("p");
-            setsReps.innerText = `Sets: ${workoutList[i].exercises[j].sets} Reps: ${workoutList[i].exercises[j].reps}`;
-            const editExerciseBtn = document.createElement("button");
-            editExerciseBtn.innerText = "Edit Exercise";
-            editExerciseBtn.addEventListener("click", () => editExercise(i, j));
-            const deleteExerciseBtn = document.createElement("button");
-            deleteExerciseBtn.innerText = "Delete Exercise";
-            deleteExerciseBtn.addEventListener("click", () =>
-              deleteExercise(i, j)
-            );
-            exerciseContainer.appendChild(exerciseName);
-            exerciseContainer.appendChild(setsReps);
-            exerciseContainer.appendChild(editExerciseBtn);
-            exerciseContainer.appendChild(deleteExerciseBtn);
-            exercisesSection.appendChild(exerciseContainer);
+      taskList.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (e.target.classList.contains("delete")) {
+          if (confirm("Are you sure?")) {
+            e.target.parentElement.remove();
           }
-          const addExerciseBtn = document.createElement("button");
-          addExerciseBtn.innerText = "Add Exercise";
-          addExerciseBtn.addEventListener("click", (event) =>
-            addExercise(event, i)
-          );
-          workoutContainer.appendChild(workoutName);
-          workoutContainer.appendChild(editWorkoutBtn);
-          workoutContainer.appendChild(deleteWorkoutBtn);
-          workoutContainer.appendChild(exercisesSection);
-          workoutContainer.appendChild(addExerciseBtn);
-          workoutListSection.appendChild(workoutContainer);
         }
-      }
-      window.onload = function () {
-        const addWorkoutForm = document.getElementById("add-workout-form");
-        addWorkoutForm.addEventListener("submit", addWorkout);
-      };
+      });
     </script>
   </body>
 </html>
