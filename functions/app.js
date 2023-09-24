@@ -12,8 +12,8 @@ const app = express();
 const apiRouter = express.Router();
 
 const corsOptions = {
-  origin: 'http://localhost:5002',
-  allowedHeaders: '*'
+  origin: "*",
+  allowedHeaders: "*",
 };
 
 function addMiddleware() {
